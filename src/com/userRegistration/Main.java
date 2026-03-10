@@ -2,40 +2,40 @@ package com.userRegistration;
 
 import java.util.Scanner;
 import java.util.UUID;
+import java.time.LocalDate;
 import java.util.*;
 import com.authentication.AuthContext;
 import com.authentication.SessionManager;
 import com.contacts.Contact;
 import com.contacts.CreateContact;
+import com.display.BasicContactView;
+import com.display.PrettyContactView;
 import com.exception.InvalidInputException;
 import com.profilemanagement.ProfileHandler;
 
 
 
 /**
- * UC-04: Create Contact
+ * UC-05: View Contact Details
  *
  * Purpose:
- * Enables a logged-in user to add a new contact with name, emails, phone numbers,
- * and optional fields like contactId and date.
+ * Allows a logged-in user to view the entire contact list with complete details.
  *
  * How it works:
- * - User input is collected via Scanner and validated using NameValidator,
- *   EmailValidator, and PhoneNoValidator.
- * - A unique contactId is generated with UUID and date is set with LocalDate.now().
- * - The Contact object is constructed using the Builder Pattern:
- *   -> Mandatory field: name
- *   -> Optional fields: email list, phone number list, date, contactId
- * - The built Contact is stored in Main.contactList for later retrieval.
+ * - Iterates through Main.contactList and prints each Contact object.
+ * - Contact class provides getters and overrides toString() for formatted display.
+ * - Decorator Pattern can be applied to enhance output formatting (e.g., pretty view,
+ *   tabular view, JSON view) without changing the core Contact class.
  *
  * Key Concepts:
- * - OOP: Encapsulation of contact details, validation logic separated into utility classes.
- * - Design Pattern: Builder Pattern ensures flexible and readable Contact creation.
- * - Java Features: Collections for multiple emails/phones, LocalDate for timestamps, UUID for unique IDs.
+ * - OOP: Encapsulation of contact data, display via toString().
+ * - Design Pattern: Decorator Pattern for flexible formatting of multiple contacts.
+ * - Java Features: Collections for storing contacts, String formatting for output.
  */
 
+
 // @author Vivek 
-// @version 4.0
+// @version 5.0
 
 
 public class Main {
@@ -56,6 +56,32 @@ public class Main {
                 .build();
         userList.add(user01);
         userList.add(user02);
+       
+        // Creating Dummy Contacts
+        String contactId1 = UUID.randomUUID().toString();
+        List<String> emailList1 = new ArrayList<>(Arrays.asList("shreyas@gmail.com", "shreyas.work@gmail.com"));
+        List<String> phoneNoList1 = new ArrayList<>(Arrays.asList("9972512411", "9988776655"));
+        LocalDate date1 = LocalDate.parse("2026-01-02");
+        Contact contact1 = new Contact.Builder("Shreyas")
+                .contactId(contactId1)
+                .date(date1)
+                .email(emailList1)
+                .phoneNo(phoneNoList1)
+                .build();
+        Main.contactList.put(contactId1, contact1);
+
+        // Contact 02
+        String contactId2 = UUID.randomUUID().toString();
+        List<String> emailList2 = new ArrayList<>(Arrays.asList("vivek@gmail.com"));
+        List<String> phoneNoList2 = new ArrayList<>(Arrays.asList("7204760809"));
+        LocalDate date2 = LocalDate.parse("2026-02-15");
+        Contact contact2 = new Contact.Builder("Vivek")
+                .contactId(contactId2)
+                .date(date2)
+                .email(emailList2)
+                .phoneNo(phoneNoList2)
+                .build();
+        Main.contactList.put(contactId2, contact2);
     }
 
     public static void main(String[] args) {
@@ -150,6 +176,16 @@ public class Main {
             		System.out.println(e.getMessage());
             	}
             }
+            case 3:{
+            	System.out.println("\n Your Contact List : ");
+            	
+            	for(Map.Entry<String, Contact> entry : contactList.entrySet()) {
+            		PrettyContactView view = new PrettyContactView(new BasicContactView());   
+            		System.out.println(view.display(entry.getValue()));
+            	}  
+            	System.out.println("\n");
+            	break;
+            }
             case 4:{
             	System.out.println("Adding a New Contact \n");
             	try {
@@ -159,7 +195,6 @@ public class Main {
             		System.out.println(e.getMessage());
             	}
             	break;
-            	
             }
             default :{
             	end = true;
@@ -167,6 +202,5 @@ public class Main {
             }
             }
         }while(end==false);
-        
     }
 }
