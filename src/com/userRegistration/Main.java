@@ -8,6 +8,7 @@ import com.authentication.AuthContext;
 import com.authentication.SessionManager;
 import com.contacts.Contact;
 import com.contacts.CreateContact;
+import com.contacts.contactsmanagement.EditContactHandler;
 import com.display.BasicContactView;
 import com.display.PrettyContactView;
 import com.exception.InvalidInputException;
@@ -16,26 +17,31 @@ import com.profilemanagement.ProfileHandler;
 
 
 /**
- * UC-05: View Contact Details
+ * UC-06: Edit Contact
  *
  * Purpose:
- * Allows a logged-in user to view the entire contact list with complete details.
+ * Allows a logged-in user to modify existing contact information such as name,
+ * emails, and phone numbers, with support for undo/redo of changes.
  *
  * How it works:
- * - Iterates through Main.contactList and prints each Contact object.
- * - Contact class provides getters and overrides toString() for formatted display.
- * - Decorator Pattern can be applied to enhance output formatting (e.g., pretty view,
- *   tabular view, JSON view) without changing the core Contact class.
+ * - User selects a contact from Main.contactList and chooses which field to edit.
+ * - Setter methods in Contact validate new values before applying changes.
+ * - Command Pattern encapsulates each edit action (e.g., EditNameCommand, EditEmailCommand,
+ *   EditPhoneCommand) and provides undo/redo functionality.
+ * - Memento Pattern can be used to preserve and restore full contact state snapshots.
  *
  * Key Concepts:
- * - OOP: Encapsulation of contact data, display via toString().
- * - Design Pattern: Decorator Pattern for flexible formatting of multiple contacts.
- * - Java Features: Collections for storing contacts, String formatting for output.
+ * - OOP: Encapsulation with setters, defensive copying for lists, copy constructor for safe modifications.
+ * - Design Patterns: Command Pattern for undo/redo, Memento Pattern for state preservation.
+ * - Java Features: Collections for multiple emails/phones, deep vs. shallow copy handling,
+ *   validation before state change.
  */
 
 
+
 // @author Vivek 
-// @version 5.0
+// @version 6.0
+
 
 
 public class Main {
@@ -158,7 +164,7 @@ public class Main {
         System.out.println("-----------------------------");
         boolean end = false;
         do {
-        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. End ");
+        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. End ");
             System.out.print(" : ");
             int ch = sc.nextInt();
             sc.nextLine();
@@ -195,6 +201,11 @@ public class Main {
             		System.out.println(e.getMessage());
             	}
             	break;
+            }
+            case 5:{
+            	EditContactHandler handler = new EditContactHandler();
+                handler.editContact(sc, contactList);
+                break;
             }
             default :{
             	end = true;
