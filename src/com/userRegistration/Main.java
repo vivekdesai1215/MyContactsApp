@@ -8,6 +8,7 @@ import com.authentication.AuthContext;
 import com.authentication.SessionManager;
 import com.contacts.Contact;
 import com.contacts.CreateContact;
+import com.contacts.DeleteContactHandler;
 import com.contacts.contactsmanagement.EditContactHandler;
 import com.display.BasicContactView;
 import com.display.PrettyContactView;
@@ -17,30 +18,30 @@ import com.profilemanagement.ProfileHandler;
 
 
 /**
- * UC-06: Edit Contact
+ * UC-07: Delete Contact
  *
  * Purpose:
- * Allows a logged-in user to modify existing contact information such as name,
- * emails, and phone numbers, with support for undo/redo of changes.
+ * Allows a logged-in user to remove a contact from their list, with confirmation
+ * to prevent accidental deletions.
  *
  * How it works:
- * - User selects a contact from Main.contactList and chooses which field to edit.
- * - Setter methods in Contact validate new values before applying changes.
- * - Command Pattern encapsulates each edit action (e.g., EditNameCommand, EditEmailCommand,
- *   EditPhoneCommand) and provides undo/redo functionality.
- * - Memento Pattern can be used to preserve and restore full contact state snapshots.
+ * - User selects a contact from Main.contactList by serial number.
+ * - A confirmation prompt ensures the user intends to delete.
+ * - On confirmation, the contact is removed from the list (hard delete).
+ * - Optionally, a soft delete can be implemented by marking the contact as inactive
+ *   instead of removing it permanently.
  *
  * Key Concepts:
- * - OOP: Encapsulation with setters, defensive copying for lists, copy constructor for safe modifications.
- * - Design Patterns: Command Pattern for undo/redo, Memento Pattern for state preservation.
- * - Java Features: Collections for multiple emails/phones, deep vs. shallow copy handling,
- *   validation before state change.
+ * - OOP: Lifecycle management of contact objects, potential cascade delete for related entities.
+ * - Design Pattern: Observer Pattern for notifying dependent modules of deletion events.
+ * - Java Features: Collections for managing contacts, exception handling for invalid input,
+ *   confirmation dialogs, soft vs. hard delete strategies.
  */
 
 
 
 // @author Vivek 
-// @version 6.0
+// @version 7.0
 
 
 
@@ -164,7 +165,7 @@ public class Main {
         System.out.println("-----------------------------");
         boolean end = false;
         do {
-        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. End ");
+        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. End ");
             System.out.print(" : ");
             int ch = sc.nextInt();
             sc.nextLine();
@@ -207,6 +208,12 @@ public class Main {
                 handler.editContact(sc, contactList);
                 break;
             }
+            case 6: {
+                DeleteContactHandler handler = new DeleteContactHandler();
+                handler.deleteContact(sc, contactList);
+                break;
+            }
+           
             default :{
             	end = true;
             	break;
