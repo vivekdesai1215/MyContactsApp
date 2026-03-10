@@ -29,7 +29,6 @@ public class RegistrationHandler {
         System.out.print("Enter your password: ");
         String password = sc.next();
 
-        // Builder usage
         User user = new User.Builder(name, userType)
                         .email(email)
                         .password(password)

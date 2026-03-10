@@ -5,34 +5,42 @@ import java.util.UUID;
 import java.util.*;
 import com.authentication.AuthContext;
 import com.authentication.SessionManager;
+import com.contacts.Contact;
+import com.contacts.CreateContact;
 import com.exception.InvalidInputException;
 import com.profilemanagement.ProfileHandler;
 
 
 
 /**
- * UC-03: User Profile Management
+ * UC-04: Create Contact
  *
- * This file is the entry point of the MyContacts application.
- * After login, the user can view or update profile details (name, email, phone).
+ * Purpose:
+ * Enables a logged-in user to add a new contact with name, emails, phone numbers,
+ * and optional fields like contactId and date.
  *
- * Command Pattern Usage:
- * - Each update action (UpdateNameCommand, UpdateEmailCommand, UpdatePhoneNoCommand)
- *   encapsulates the request as a Command object.
- * - ProfileHandler creates the appropriate Command based on user choice.
- * - ProfileManager (Invoker) executes the Command, which delegates the update
- *   to the User (Receiver).
- * - This decouples the UI flow from the actual update logic, making profile
- *   operations extensible and allowing features like undo in the future.
- *   
- *   @version 3.0
- *   @author Vivek Desai
+ * How it works:
+ * - User input is collected via Scanner and validated using NameValidator,
+ *   EmailValidator, and PhoneNoValidator.
+ * - A unique contactId is generated with UUID and date is set with LocalDate.now().
+ * - The Contact object is constructed using the Builder Pattern:
+ *   -> Mandatory field: name
+ *   -> Optional fields: email list, phone number list, date, contactId
+ * - The built Contact is stored in Main.contactList for later retrieval.
  *
+ * Key Concepts:
+ * - OOP: Encapsulation of contact details, validation logic separated into utility classes.
+ * - Design Pattern: Builder Pattern ensures flexible and readable Contact creation.
+ * - Java Features: Collections for multiple emails/phones, LocalDate for timestamps, UUID for unique IDs.
  */
+
+// @author Vivek 
+// @version 4.0
 
 
 public class Main {
     public static List<User> userList = new ArrayList<>();
+    public static Map<String,Contact> contactList = new HashMap<>();
 
     // Static block with demo users
     static {
@@ -124,7 +132,7 @@ public class Main {
         System.out.println("-----------------------------");
         boolean end = false;
         do {
-        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. End ");
+        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. End ");
             System.out.print(" : ");
             int ch = sc.nextInt();
             sc.nextLine();
@@ -141,6 +149,17 @@ public class Main {
             	}catch(InvalidInputException e) {
             		System.out.println(e.getMessage());
             	}
+            }
+            case 4:{
+            	System.out.println("Adding a New Contact \n");
+            	try {
+            		Contact contact = CreateContact.createContact(sc);
+            		System.out.println("\nSuccessfull added contact : "+contact);
+            	}catch(InvalidInputException e) {
+            		System.out.println(e.getMessage());
+            	}
+            	break;
+            	
             }
             default :{
             	end = true;
