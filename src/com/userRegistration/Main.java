@@ -15,35 +15,40 @@ import com.display.BasicContactView;
 import com.display.PrettyContactView;
 import com.exception.InvalidInputException;
 import com.profilemanagement.ProfileHandler;
+import com.search.SearchContactHandler;
 
 
 
 /**
- * UC-08: Bulk Operations
+ * UC-09: Search Contacts
  *
  * Purpose:
- * Allows a logged-in user to perform actions on multiple contacts at once,
- * such as deleting or exporting them, instead of handling each contact individually.
+ * Allows a logged-in user to quickly locate contacts by name, phone number,
+ * email address, or tags, supporting both simple and advanced queries.
  *
  * How it works:
- * - User selects multiple contacts either by filter (e.g., keyword match) or
- *   by choosing multiple serial numbers from the contact list.
- * - A BulkContactOperation (Composite) object wraps the selected contacts.
- * - The chosen operation (delete or export) is applied uniformly to all selected contacts.
- * - Delete removes all selected contacts from Main.contactList.
- * - Export writes all selected contacts into a text file, creating the file if it does not exist.
+ * - User selects the search type (name, email, phone, or tag).
+ * - A SearchCriteria implementation is created based on the chosen type.
+ * - The contact list is filtered using Streams and Predicates to find matches.
+ * - Case-insensitive comparison ensures user-friendly results.
+ * - Advanced queries can be built by combining multiple criteria using
+ *   the Specification Pattern (e.g., name AND email).
+ * - Results are displayed in the chosen contact view format.
  *
  * Key Concepts:
- * - OOP: Collection operations, filtering predicates, batch lifecycle management.
- * - Design Pattern: Composite Pattern to treat groups of contacts as a single unit.
- * - Java Features: Streams API for filtering, lambda expressions and method references
- *   for concise batch processing, FileWriter for exporting to text files.
+ * - OOP: Encapsulation of search logic in SearchCriteria interface and
+ *   concrete implementations, composition for complex queries.
+ * - Design Pattern: Specification Pattern for flexible query building,
+ *   Chain of Responsibility for filter pipelines.
+ * - Java Features: Predicate interface, Stream API for filtering,
+ *   regex pattern matching for advanced searches, case-insensitive comparison.
  */
 
 
 
+
 // @author Vivek 
-// @version 8.0
+// @version 9.0
 
 
 
@@ -167,7 +172,7 @@ public class Main {
         System.out.println("-----------------------------");
         boolean end = false;
         do {
-        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. Bulk Delete/Export \n 8. End ");
+        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. Bulk Delete/Export \n 8. Search Contact \n 9. End ");
             System.out.print(" : ");
             int ch = sc.nextInt();
             sc.nextLine();
@@ -220,6 +225,18 @@ public class Main {
             	    handler.performBulkOperation(sc, contactList);
             	    break;
             }
+            case 8: {
+                SearchContactHandler handler = new SearchContactHandler();
+                try {
+                	 handler.searchContacts(sc, contactList);
+                     
+                }catch(InvalidInputException e) {
+                	System.out.println(e.getMessage());
+                }                
+                break;
+               
+            }
+
            
             default :{
             	end = true;
