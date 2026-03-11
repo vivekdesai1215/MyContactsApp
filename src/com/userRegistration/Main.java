@@ -9,6 +9,7 @@ import com.authentication.SessionManager;
 import com.contacts.Contact;
 import com.contacts.CreateContact;
 import com.contacts.DeleteContactHandler;
+import com.contacts.bulkoperations.BulkOperationHandler;
 import com.contacts.contactsmanagement.EditContactHandler;
 import com.display.BasicContactView;
 import com.display.PrettyContactView;
@@ -18,30 +19,31 @@ import com.profilemanagement.ProfileHandler;
 
 
 /**
- * UC-07: Delete Contact
+ * UC-08: Bulk Operations
  *
  * Purpose:
- * Allows a logged-in user to remove a contact from their list, with confirmation
- * to prevent accidental deletions.
+ * Allows a logged-in user to perform actions on multiple contacts at once,
+ * such as deleting or exporting them, instead of handling each contact individually.
  *
  * How it works:
- * - User selects a contact from Main.contactList by serial number.
- * - A confirmation prompt ensures the user intends to delete.
- * - On confirmation, the contact is removed from the list (hard delete).
- * - Optionally, a soft delete can be implemented by marking the contact as inactive
- *   instead of removing it permanently.
+ * - User selects multiple contacts either by filter (e.g., keyword match) or
+ *   by choosing multiple serial numbers from the contact list.
+ * - A BulkContactOperation (Composite) object wraps the selected contacts.
+ * - The chosen operation (delete or export) is applied uniformly to all selected contacts.
+ * - Delete removes all selected contacts from Main.contactList.
+ * - Export writes all selected contacts into a text file, creating the file if it does not exist.
  *
  * Key Concepts:
- * - OOP: Lifecycle management of contact objects, potential cascade delete for related entities.
- * - Design Pattern: Observer Pattern for notifying dependent modules of deletion events.
- * - Java Features: Collections for managing contacts, exception handling for invalid input,
- *   confirmation dialogs, soft vs. hard delete strategies.
+ * - OOP: Collection operations, filtering predicates, batch lifecycle management.
+ * - Design Pattern: Composite Pattern to treat groups of contacts as a single unit.
+ * - Java Features: Streams API for filtering, lambda expressions and method references
+ *   for concise batch processing, FileWriter for exporting to text files.
  */
 
 
 
 // @author Vivek 
-// @version 7.0
+// @version 8.0
 
 
 
@@ -165,7 +167,7 @@ public class Main {
         System.out.println("-----------------------------");
         boolean end = false;
         do {
-        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. End ");
+        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. Bulk Delete/Export \n 8. End ");
             System.out.print(" : ");
             int ch = sc.nextInt();
             sc.nextLine();
@@ -212,6 +214,11 @@ public class Main {
                 DeleteContactHandler handler = new DeleteContactHandler();
                 handler.deleteContact(sc, contactList);
                 break;
+            }
+            case 7:{
+            	 BulkOperationHandler handler = new BulkOperationHandler();
+            	    handler.performBulkOperation(sc, contactList);
+            	    break;
             }
            
             default :{
