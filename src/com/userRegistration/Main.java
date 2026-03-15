@@ -7,10 +7,12 @@ import java.util.*;
 import com.authentication.AuthContext;
 import com.authentication.SessionManager;
 import com.contacts.Contact;
+import com.contacts.ContactSomeoneHandler;
 import com.contacts.CreateContact;
 import com.contacts.DeleteContactHandler;
 import com.contacts.bulkoperations.BulkOperationHandler;
 import com.contacts.contactsmanagement.EditContactHandler;
+import com.contacts.filter.FilterHandler;
 import com.display.BasicContactView;
 import com.display.PrettyContactView;
 import com.exception.InvalidInputException;
@@ -20,35 +22,29 @@ import com.search.SearchContactHandler;
 
 
 /**
- * UC-09: Search Contacts
+ * UC-10: Advanced Filtering
  *
  * Purpose:
- * Allows a logged-in user to quickly locate contacts by name, phone number,
- * email address, or tags, supporting both simple and advanced queries.
+ * Lets a logged-in user refine contacts using multiple filters
+ * (tags, date added, frequency) and sort results.
  *
  * How it works:
- * - User selects the search type (name, email, phone, or tag).
- * - A SearchCriteria implementation is created based on the chosen type.
- * - The contact list is filtered using Streams and Predicates to find matches.
- * - Case-insensitive comparison ensures user-friendly results.
- * - Advanced queries can be built by combining multiple criteria using
- *   the Specification Pattern (e.g., name AND email).
- * - Results are displayed in the chosen contact view format.
+ * - User selects one or more filters.
+ * - Each filter is a concrete implementation of the Filter interface.
+ * - CompositeFilter combines them for multi-condition matching.
+ * - Results are processed with Streams and sorted using a chosen strategy.
  *
  * Key Concepts:
- * - OOP: Encapsulation of search logic in SearchCriteria interface and
- *   concrete implementations, composition for complex queries.
- * - Design Pattern: Specification Pattern for flexible query building,
- *   Chain of Responsibility for filter pipelines.
- * - Java Features: Predicate interface, Stream API for filtering,
- *   regex pattern matching for advanced searches, case-insensitive comparison.
+ * - OOP: Filter hierarchy, composite filters.
+ * - Design Patterns: Composite for combining filters, Strategy for sorting.
+ * - Java: Comparator, Streams, functional interfaces.
  */
 
 
 
 
 // @author Vivek 
-// @version 9.0
+// @version 10.0
 
 
 
@@ -172,7 +168,7 @@ public class Main {
         System.out.println("-----------------------------");
         boolean end = false;
         do {
-        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. Bulk Delete/Export \n 8. Search Contact \n 9. End ");
+        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. Bulk Delete/Export \n 8. Search Contact \n 9. Contact Someone \n 10. Filter Contacts \n 11. End ");
             System.out.print(" : ");
             int ch = sc.nextInt();
             sc.nextLine();
@@ -233,11 +229,18 @@ public class Main {
                 }catch(InvalidInputException e) {
                 	System.out.println(e.getMessage());
                 }                
+                break;               
+            }      
+            case 9:{
+            	ContactSomeoneHandler handler = new ContactSomeoneHandler();
+                handler.contactSomeone(sc, contactList);
                 break;
-               
             }
-
-           
+            case 10:{
+            	FilterHandler handler = new FilterHandler();
+                handler.filterContacts(sc, contactList);
+                break;
+            }
             default :{
             	end = true;
             	break;
