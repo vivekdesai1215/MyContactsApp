@@ -1,7 +1,7 @@
-package com.search;
+package com.contacts.search;
 
 import com.contacts.Contact;
-import com.tags.Tag;
+import com.contacts.tags.Tag;
 
 public class TagSearch implements SearchCriteria {
     private Tag tag;

@@ -1,4 +1,4 @@
-package com.tags;
+package com.contacts.tags;
 
 import java.util.*;
 

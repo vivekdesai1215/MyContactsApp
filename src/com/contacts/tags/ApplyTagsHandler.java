@@ -1,8 +1,8 @@
-package com.tags;
+package com.contacts.tags;
 
 import java.util.*;
 import com.contacts.Contact;
-import com.tags.TagRepository;
+import com.contacts.tags.TagRepository;
 
 public class ApplyTagsHandler {
     public void applyTags(Scanner sc, Map<String, Contact> contactList) {

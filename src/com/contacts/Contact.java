@@ -1,8 +1,8 @@
 package com.contacts;
 import java.util.*;
 
+import com.contacts.tags.Tag;
 import com.exception.InvalidInputException;
-import com.tags.Tag;
 import com.validation.EmailValidator;
 import com.validation.NameValidator;
 import com.validation.PhoneNoValidator;

@@ -1,7 +1,8 @@
-package com.tags;
+package com.contacts.tags;
 
 import java.util.Scanner;
-import com.tags.TagRepository;
+
+import com.contacts.tags.TagRepository;
 
 public class TagManagementHandler {
     public void manageTags(Scanner sc) {

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import com.contacts.Contact;
-import com.tags.Tag;
+import com.contacts.tags.Tag;
 
 public class FilterHandler {
     public void filterContacts(Scanner sc, Map<String, Contact> contactList) {

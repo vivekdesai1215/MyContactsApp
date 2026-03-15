@@ -4,7 +4,7 @@ package com.contacts.contactsmanagement;
 import java.util.Set;
 import java.util.HashSet;
 import com.contacts.Contact;
-import com.tags.Tag;
+import com.contacts.tags.Tag;
 
 public class EditTagCommand implements Command {
     private Contact contact;

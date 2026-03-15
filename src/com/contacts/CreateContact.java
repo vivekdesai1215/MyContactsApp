@@ -1,9 +1,10 @@
 package com.contacts;
 import java.time.LocalDate;
 import java.util.*;
+
+import com.contacts.tags.Tag;
+import com.contacts.tags.TagRepository;
 import com.exception.InvalidInputException;
-import com.tags.Tag;
-import com.tags.TagRepository;
 import com.userRegistration.Main;
 import com.validation.EmailValidator;
 import com.validation.NameValidator;

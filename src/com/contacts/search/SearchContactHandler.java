@@ -1,11 +1,11 @@
-package com.search;
+package com.contacts.search;
 
 
 import java.util.*;
 import java.util.stream.Collectors;
 import com.contacts.Contact;
+import com.contacts.tags.Tag;
 import com.exception.InvalidInputException;
-import com.tags.Tag;
 
 public class SearchContactHandler {
     public void searchContacts(Scanner sc, Map<String, Contact> contactList) throws InvalidInputException{

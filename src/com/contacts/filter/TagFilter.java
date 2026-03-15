@@ -1,7 +1,7 @@
 package com.contacts.filter;
 
 import com.contacts.Contact;
-import com.tags.Tag;
+import com.contacts.tags.Tag;
 
 public class TagFilter implements Filter {
 

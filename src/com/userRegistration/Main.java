@@ -12,14 +12,14 @@ import com.contacts.CreateContact;
 import com.contacts.DeleteContactHandler;
 import com.contacts.bulkoperations.BulkOperationHandler;
 import com.contacts.contactsmanagement.EditContactHandler;
+import com.contacts.display.BasicContactView;
+import com.contacts.display.PrettyContactView;
 import com.contacts.filter.FilterHandler;
-import com.display.BasicContactView;
-import com.display.PrettyContactView;
+import com.contacts.search.SearchContactHandler;
+import com.contacts.tags.ApplyTagsHandler;
+import com.contacts.tags.TagManagementHandler;
 import com.exception.InvalidInputException;
 import com.profilemanagement.ProfileHandler;
-import com.search.SearchContactHandler;
-import com.tags.ApplyTagsHandler;
-import com.tags.TagManagementHandler;
 
 
 

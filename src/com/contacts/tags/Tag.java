@@ -1,4 +1,4 @@
-package com.tags;
+package com.contacts.tags;
 
 public class Tag {
     private final String name;

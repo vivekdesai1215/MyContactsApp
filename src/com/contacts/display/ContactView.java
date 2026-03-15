@@ -1,4 +1,4 @@
-package com.display;
+package com.contacts.display;
 import com.contacts.Contact;
 
 public interface ContactView {

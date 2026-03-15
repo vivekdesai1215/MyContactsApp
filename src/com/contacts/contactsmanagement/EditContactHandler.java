@@ -4,8 +4,8 @@ package com.contacts.contactsmanagement;
 import java.util.*;
 
 import com.contacts.Contact;
-import com.tags.Tag;
-import com.tags.TagRepository;
+import com.contacts.tags.Tag;
+import com.contacts.tags.TagRepository;
 
 
 public class EditContactHandler {
