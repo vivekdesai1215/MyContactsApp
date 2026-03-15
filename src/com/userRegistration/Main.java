@@ -18,33 +18,36 @@ import com.display.PrettyContactView;
 import com.exception.InvalidInputException;
 import com.profilemanagement.ProfileHandler;
 import com.search.SearchContactHandler;
+import com.tags.TagManagementHandler;
 
 
 
 /**
- * UC-10: Advanced Filtering
+ * UC-11: Create and Manage Tags
  *
  * Purpose:
- * Lets a logged-in user refine contacts using multiple filters
- * (tags, date added, frequency) and sort results.
+ * Lets a logged-in user create and organize tags (e.g., Family, Work, Friends)
+ * to categorize contacts and improve search/filtering.
  *
  * How it works:
- * - User selects one or more filters.
- * - Each filter is a concrete implementation of the Filter interface.
- * - CompositeFilter combines them for multi-condition matching.
- * - Results are processed with Streams and sorted using a chosen strategy.
+ * - User creates new tags or reuses existing ones from TagRepository.
+ * - TagRepository ensures unique tag instances (Flyweight Pattern).
+ * - Contacts can have multiple tags, forming a many-to-many relationship.
+ * - User can also view all available tags for easier selection.
  *
  * Key Concepts:
- * - OOP: Filter hierarchy, composite filters.
- * - Design Patterns: Composite for combining filters, Strategy for sorting.
- * - Java: Comparator, Streams, functional interfaces.
+ * - OOP: Tag class with validation, many-to-many Contact ↔ Tag relationship.
+ * - Design Pattern: Flyweight Pattern for shared tag instances.
+ * - Java: Set for uniqueness, equals()/hashCode() for comparison,
+ *   EnumSet for predefined tags.
  */
 
 
 
 
+
 // @author Vivek 
-// @version 10.0
+// @version 11.0
 
 
 
@@ -168,7 +171,7 @@ public class Main {
         System.out.println("-----------------------------");
         boolean end = false;
         do {
-        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. Bulk Delete/Export \n 8. Search Contact \n 9. Contact Someone \n 10. Filter Contacts \n 11. End ");
+        	System.out.println(" 1. View Profile \n 2. Update Profile Info \n 3. View Contacts \n 4. Add Contacts \n 5. Edit Contacts \n 6. Delete a contact \n 7. Bulk Delete/Export \n 8. Search Contact \n 9. Contact Someone \n 10. Filter Contacts \n 11. View/Add Tags \n 12. End");
             System.out.print(" : ");
             int ch = sc.nextInt();
             sc.nextLine();
@@ -240,6 +243,13 @@ public class Main {
             	FilterHandler handler = new FilterHandler();
                 handler.filterContacts(sc, contactList);
                 break;
+            }
+            case 11:{
+            	System.out.println("\n"); 
+            	TagManagementHandler handler = new TagManagementHandler();
+            	    handler.manageTags(sc);
+            	    System.out.println("\n");
+            	    break;
             }
             default :{
             	end = true;
